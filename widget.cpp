@@ -6,6 +6,7 @@
 #include <QtDebug>
 #include <QSqlError>
 
+// Constructeur de la classe Widget
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -41,6 +42,7 @@ Widget::Widget(QWidget *parent)
             QString club = query.value(2).toString();
             int note = query.value(3).toInt();
 
+            // Ajouter une nouvelle ligne pour chaque enregistrement
             tableWidget->insertRow(row);
             tableWidget->setItem(row, 0, new QTableWidgetItem(nom));
             tableWidget->setItem(row, 1, new QTableWidgetItem(club));
@@ -55,6 +57,7 @@ Widget::Widget(QWidget *parent)
         // Connecter le signal 'itemChanged' à la méthode 'updateNoteInDatabase'
         connect(tableWidget, &QTableWidget::itemChanged, this, &Widget::updateNoteInDatabase);
 
+        // Fermer la connexion à la base de données
         db.close();
     }
     else
@@ -63,6 +66,7 @@ Widget::Widget(QWidget *parent)
     }
 }
 
+// Méthode pour mettre à jour la note dans la base de données lorsque l'utilisateur modifie une cellule
 void Widget::updateNoteInDatabase(QTableWidgetItem* item)
 {
     // Vérifier si la colonne modifiée est la colonne "Note" (colonne 2)
@@ -93,18 +97,21 @@ void Widget::updateNoteInDatabase(QTableWidgetItem* item)
         query.bindValue(":note", newNote);
         query.bindValue(":nom", nom);
 
+        // Exécuter la requête de mise à jour
         if (query.exec()) {
             qDebug() << "Nouvelle note pour" << nom << "qui passe à:" << newNote;
         } else {
             qDebug() << "Erreur lors de la mise à jour de la note:" << query.lastError().text();
         }
 
+        // Fermer la connexion à la base de données
         db.close();
     } else {
         qDebug() << "Échec de la connexion pour la mise à jour de la note.";
     }
 }
 
+// Destructeur de la classe Widget
 Widget::~Widget()
 {
     delete ui;
