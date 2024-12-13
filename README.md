@@ -50,6 +50,7 @@ Cette commande crée une base de données jeu et une table jeu avec les colonnes
 
 3.Dans mes fichier .cpp faites en sorte que la connexion à la base de donnés soit bien mis avec vos information 
 
+    // Connexion à la base de données
     db.setDatabaseName("jeu");  // Nom de la base de données
     db.setUserName("etudiant"); // Nom d'utilisateur pour se connecter
     db.setPassword("Passciel2"); // Mot de passe pour se connecter
